@@ -1,0 +1,1871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Happy Birthday, Sanjana 🌸 — Sakura Rain</title>
+<meta name="description" content="A cinematic Sakura Rain birthday experience for Sanjana.">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Poppins:wght@300;400;500;600&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+
+<!-- Styles -->
+<style>
+/* ==========================================================================
+   SAKURA RAIN — Design Tokens
+   ========================================================================== */
+
+:root {
+  /* ---- Brand palette (from brief) ---- */
+  --pastel-pink: #FFC7E6;
+  --blossom-pink: #F8AFCB;
+  --lavender: #CDB4FF;
+  --sky-blue: #A7D8FF;
+  --deep-blue: #4B79FF;
+  --pure-white: #FFFFFF;
+
+  /* ---- Glass ---- */
+  --glass-fill: rgba(255, 255, 255, 0.12);
+  --glass-fill-strong: rgba(255, 255, 255, 0.18);
+  --glass-border: rgba(255, 255, 255, 0.22);
+  --glass-shadow: rgba(20, 20, 60, 0.35);
+
+  /* ---- Extended night/sky range (derived from deep-blue, keeps palette family) ---- */
+  --night-deep: #0A0E2A;
+  --night-mid: #161B4A;
+  --night-soft: #262C6B;
+  --dawn-mauve: #3C3768;
+  --morning-mist: #E8E2FF;
+
+  /* ---- Gradients ---- */
+  --sky-morning: linear-gradient(180deg, #DCE9FF 0%, #C9D9FF 28%, #E9D3F4 62%, #FBD6E8 100%);
+  --sky-day: linear-gradient(180deg, #BFD9FF 0%, #CBD3FF 40%, #E7CFF6 100%);
+  --sky-dusk: linear-gradient(180deg, #6B6FB8 0%, #9271B0 45%, #E39FB6 100%);
+  --sky-night: linear-gradient(180deg, #05061A 0%, #0A0E2A 30%, #161B4A 65%, #262C6B 100%);
+  --sky-dawn: linear-gradient(180deg, #262C6B 0%, #7C6FA8 35%, #E8B8CE 70%, #FDE4E9 100%);
+  --text-gradient: linear-gradient(100deg, var(--blossom-pink) 0%, var(--lavender) 50%, var(--sky-blue) 100%);
+  --glow-gradient: radial-gradient(circle, rgba(255, 199, 230, 0.55) 0%, rgba(167, 216, 255, 0) 70%);
+
+  /* ---- Typography ---- */
+  --font-display: 'Playfair Display', 'Noto Serif JP', serif;
+  --font-body: 'Poppins', 'Noto Sans JP', sans-serif;
+  --font-hand: 'Caveat', cursive;
+
+  --fs-hero: clamp(2.6rem, 7vw, 6rem);
+  --fs-h1: clamp(2rem, 5vw, 3.6rem);
+  --fs-h2: clamp(1.5rem, 3.4vw, 2.4rem);
+  --fs-body: clamp(1rem, 1.4vw, 1.15rem);
+  --fs-small: clamp(0.8rem, 1vw, 0.95rem);
+  --fs-hand: clamp(1.4rem, 2.6vw, 2.2rem);
+
+  /* ---- Spacing scale ---- */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 7rem;
+
+  /* ---- Radii / blur ---- */
+  --radius-sm: 14px;
+  --radius-md: 24px;
+  --radius-lg: 36px;
+  --blur-glass: 20px;
+
+  /* ---- Motion ---- */
+  --ease-silk: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-soft: cubic-bezier(0.34, 0.06, 0.13, 1);
+  --dur-fast: 0.35s;
+  --dur-med: 0.9s;
+  --dur-slow: 1.8s;
+
+  /* ---- Z stacking ---- */
+  --z-bg: 1;
+  --z-rain: 5;
+  --z-petals: 6;
+  --z-scene: 10;
+  --z-ui: 50;
+  --z-cursor: 80;
+  --z-loader: 100;
+}
+
+/* Reduced motion: shorten/soften durations globally, JS also checks this flag */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0.01s;
+    --dur-med: 0.01s;
+    --dur-slow: 0.01s;
+  }
+}
+
+
+/* ==========================================================================
+   SAKURA RAIN — Animation Library
+   ========================================================================== */
+
+/* ---------- Generic reveal utilities (driven by JS/GSAP toggling classes) ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  filter: blur(6px);
+  transition: opacity var(--dur-med) var(--ease-silk),
+              transform var(--dur-med) var(--ease-silk),
+              filter var(--dur-med) var(--ease-silk);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+.reveal-delay-1 { transition-delay: 0.12s; }
+.reveal-delay-2 { transition-delay: 0.24s; }
+.reveal-delay-3 { transition-delay: 0.36s; }
+.reveal-delay-4 { transition-delay: 0.48s; }
+
+/* ---------- Breathing / ambient float ---------- */
+@keyframes breathe {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-10px) scale(1.015); }
+}
+.breathe { animation: breathe 6s ease-in-out infinite; }
+
+@keyframes driftX {
+  0% { transform: translateX(-4%); }
+  50% { transform: translateX(4%); }
+  100% { transform: translateX(-4%); }
+}
+
+/* ---------- Clouds ---------- */
+@keyframes cloudDrift {
+  from { background-position-x: 0; }
+  to   { background-position-x: -2000px; }
+}
+
+/* ---------- Sparkle twinkle (stars / dust / sparkles) ---------- */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.15; transform: scale(0.7); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+
+/* ---------- Firefly wander ---------- */
+@keyframes fireflyDrift {
+  0%   { transform: translate(0, 0); opacity: 0.2; }
+  20%  { opacity: 1; }
+  50%  { transform: translate(30px, -40px); opacity: 0.6; }
+  80%  { opacity: 1; }
+  100% { transform: translate(-20px, 10px); opacity: 0.2; }
+}
+
+/* ---------- Lantern float ---------- */
+@keyframes lanternFloat {
+  0%   { transform: translateY(0) translateX(0) rotate(-1.5deg); }
+  50%  { transform: translateY(-26px) translateX(10px) rotate(1.5deg); }
+  100% { transform: translateY(0) translateX(0) rotate(-1.5deg); }
+}
+@keyframes lanternGlow {
+  0%, 100% { box-shadow: 0 0 18px 6px rgba(255, 199, 230, 0.55); }
+  50% { box-shadow: 0 0 32px 12px rgba(255, 199, 230, 0.85); }
+}
+
+/* ---------- Gentle blink for the chibi character ---------- */
+@keyframes blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.08); }
+}
+.char-eye { transform-origin: center; animation: blink 5.2s ease-in-out infinite; }
+.char-eye.eye-right { animation-delay: 0.05s; }
+
+/* ---------- Hair sway ---------- */
+@keyframes hairSway {
+  0%, 100% { transform: rotate(-1.2deg); }
+  50% { transform: rotate(1.6deg); }
+}
+.char-hair { transform-origin: top center; animation: hairSway 4.5s ease-in-out infinite; }
+
+/* ---------- Dress sway ---------- */
+@keyframes dressSway {
+  0%, 100% { transform: rotate(-0.8deg) scaleX(1); }
+  50% { transform: rotate(0.8deg) scaleX(1.01); }
+}
+.char-dress { transform-origin: top center; animation: dressSway 5s ease-in-out infinite; }
+
+/* ---------- Glow text pulse ---------- */
+@keyframes glowPulse {
+  0%, 100% { text-shadow: 0 0 18px rgba(255, 199, 230, 0.55), 0 0 44px rgba(167, 216, 255, 0.35); }
+  50% { text-shadow: 0 0 30px rgba(255, 199, 230, 0.85), 0 0 64px rgba(167, 216, 255, 0.55); }
+}
+.glow-text { animation: glowPulse 4.5s ease-in-out infinite; }
+
+/* ---------- Gradient text shimmer ---------- */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.gradient-text {
+  background: var(--text-gradient);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradientShift 8s ease-in-out infinite;
+}
+
+/* ---------- Typewriter caret ---------- */
+@keyframes caretBlink {
+  0%, 45% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.caret {
+  display: inline-block;
+  width: 2px;
+  margin-left: 2px;
+  background: currentColor;
+  animation: caretBlink 0.9s steps(1) infinite;
+}
+
+/* ---------- Glass shimmer sweep on hover ---------- */
+@keyframes shimmerSweep {
+  0% { transform: translateX(-120%) rotate(8deg); }
+  100% { transform: translateX(220%) rotate(8deg); }
+}
+.glass-card::after {
+  content: '';
+  position: absolute;
+  top: -40%;
+  left: 0;
+  width: 40%;
+  height: 180%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,0.28), transparent);
+  opacity: 0;
+  pointer-events: none;
+}
+.glass-card:hover::after {
+  opacity: 1;
+  animation: shimmerSweep 1.1s var(--ease-silk);
+}
+
+/* ---------- Button ripple ---------- */
+@keyframes ripple {
+  from { transform: scale(0); opacity: 0.5; }
+  to { transform: scale(3.2); opacity: 0; }
+}
+.ripple-el {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  transform: scale(0);
+  pointer-events: none;
+  animation: ripple 0.7s var(--ease-silk);
+}
+
+/* ---------- Compass needle sway (idle) ---------- */
+@keyframes compassIdle {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+
+/* ---------- Waterfall stripes ---------- */
+@keyframes waterfallFlow {
+  0% { background-position-y: 0; }
+  100% { background-position-y: 120px; }
+}
+
+/* ---------- Rainbow fade-in ---------- */
+@keyframes rainbowRise {
+  from { opacity: 0; transform: translateY(40px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ---------- Firework burst (CSS fallback ring, canvas does full particles) ---------- */
+@keyframes fireworkRing {
+  0% { transform: scale(0.1); opacity: 1; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
+/* ---------- Loading petal fall ---------- */
+@keyframes petalFallSoft {
+  0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateY(110vh) translateX(40px) rotate(340deg); opacity: 0.9; }
+}
+
+/* ---------- Scroll cue ---------- */
+@keyframes scrollCue {
+  0% { transform: translateY(0); opacity: 0.9; }
+  60% { opacity: 0.2; }
+  100% { transform: translateY(14px); opacity: 0; }
+}
+
+/* ---------- Cursor glow pulse ---------- */
+@keyframes cursorPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.12); }
+}
+
+/* Respect reduced motion: freeze decorative infinite loops */
+@media (prefers-reduced-motion: reduce) {
+  .breathe, .char-eye, .char-hair, .char-dress, .glow-text, .gradient-text,
+  [class*="firefly"], [class*="lantern"] {
+    animation: none !important;
+  }
+}
+
+
+/* ==========================================================================
+   SAKURA RAIN — Responsive Layer
+   ========================================================================== */
+
+/* ---- Tablet ---- */
+@media (max-width: 900px) {
+  #scene-2 .scene-inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .character-stage { order: -1; }
+  .message-card { text-align: left; }
+  .journey-track { height: 60vh; }
+}
+
+/* ---- Mobile ---- */
+@media (max-width: 600px) {
+  .scene { padding: var(--space-lg) var(--space-sm); }
+  #scene-1 { padding-bottom: 8vh; }
+  .hero-title { font-size: clamp(2.1rem, 11vw, 3rem); }
+  .quote-card { max-width: 88vw; padding: 1.2rem; }
+  #ui-bar { top: var(--space-xs); right: var(--space-xs); }
+  .ui-btn { width: 38px; height: 38px; }
+  .moon { width: 70px; height: 70px; top: 6%; right: 8%; }
+  .compass-wrap { width: 100px; height: 100px; }
+  .anime-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* ---- Cursor glow: pointer devices only ---- */
+@media (hover: none), (pointer: coarse) {
+  #cursor-glow { display: none; }
+}
+
+/* ---- Small height (landscape phones) ---- */
+@media (max-height: 480px) {
+  .scene { min-height: auto; padding-top: var(--space-lg); padding-bottom: var(--space-lg); }
+}
+
+
+/* ==========================================================================
+   SAKURA RAIN — Main Stylesheet
+   A cinematic birthday experience for Sanjana
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------- */
+/* Reset                                                                   */
+/* ---------------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+html { scroll-behavior: auto; } /* Lenis handles smoothing; native stays neutral */
+body {
+  font-family: var(--font-body);
+  color: var(--pure-white);
+  background: var(--night-deep);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100%;
+}
+h1, h2, h3 { font-family: var(--font-display); margin: 0; font-weight: 600; }
+p { margin: 0; }
+img { max-width: 100%; display: block; }
+button { font-family: inherit; cursor: pointer; }
+a { color: inherit; }
+::selection { background: var(--blossom-pink); color: var(--night-deep); }
+
+/* Hide scrollbar look while keeping function (Lenis-friendly) */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.25); border-radius: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* ---------------------------------------------------------------------- */
+/* Layers: fixed backdrop canvases live behind every scene                */
+/* ---------------------------------------------------------------------- */
+#sky-layer {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-bg);
+  background: var(--sky-morning);
+  transition: background 2.4s var(--ease-silk);
+}
+#sky-layer .clouds {
+  position: absolute;
+  inset: 0;
+  opacity: 0.55;
+  background-image:
+    radial-gradient(80px 30px at 10% 20%, rgba(255,255,255,0.65), transparent 70%),
+    radial-gradient(120px 40px at 30% 12%, rgba(255,255,255,0.55), transparent 70%),
+    radial-gradient(100px 34px at 60% 25%, rgba(255,255,255,0.5), transparent 70%),
+    radial-gradient(140px 46px at 85% 15%, rgba(255,255,255,0.6), transparent 70%),
+    radial-gradient(90px 32px at 45% 8%, rgba(255,255,255,0.45), transparent 70%);
+  background-repeat: repeat-x;
+  background-size: 2000px 100%;
+  animation: cloudDrift 90s linear infinite;
+}
+#sky-layer .sun-rays {
+  position: absolute;
+  top: -10%;
+  left: 50%;
+  width: 140%;
+  height: 70%;
+  transform: translateX(-50%);
+  background: conic-gradient(from 200deg at 50% 0%, rgba(255,255,255,0) 0deg, rgba(255,255,255,0.18) 8deg, rgba(255,255,255,0) 16deg, rgba(255,255,255,0) 30deg, rgba(255,255,255,0.12) 38deg, rgba(255,255,255,0) 46deg);
+  opacity: 0.6;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+#fog-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(180deg, transparent 60%, rgba(255,255,255,0.14) 100%);
+  pointer-events: none;
+}
+
+#rain-canvas { position: fixed; inset: 0; z-index: var(--z-rain); pointer-events: none; }
+#petals-canvas, #tsparticles-petals { position: fixed; inset: 0; z-index: var(--z-petals); pointer-events: none; }
+#fireworks-canvas { position: fixed; inset: 0; z-index: 40; pointer-events: none; }
+
+/* Mountain silhouettes (parallax, scoped to Scene 1) */
+.mountains { position: absolute; left: 0; right: 0; bottom: 0; z-index: 0; pointer-events: none; }
+.mountains svg { width: 100%; height: auto; display: block; }
+
+/* ---------------------------------------------------------------------- */
+/* Loading screen                                                         */
+/* ---------------------------------------------------------------------- */
+#loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-loader);
+  background: #050510;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: var(--space-md);
+  transition: opacity 1.4s var(--ease-silk), visibility 1.4s;
+}
+#loading-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.loader-petal {
+  position: absolute;
+  top: -5%;
+  width: 14px;
+  height: 14px;
+  background: radial-gradient(circle at 30% 30%, var(--pastel-pink), var(--blossom-pink));
+  border-radius: 60% 40% 60% 40%;
+  animation: petalFallSoft linear infinite;
+  opacity: 0;
+}
+.loader-text {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.1rem, 3vw, 1.7rem);
+  color: var(--morning-mist);
+  text-align: center;
+  max-width: 80vw;
+  min-height: 2.4em;
+  letter-spacing: 0.02em;
+}
+.loader-note {
+  font-size: var(--fs-small);
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Scenes / sections shared layout                                        */
+/* ---------------------------------------------------------------------- */
+main { position: relative; z-index: var(--z-scene); }
+.scene {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl) var(--space-md);
+  text-align: center;
+}
+.scene-inner { position: relative; width: min(1100px, 100%); z-index: 2; }
+.eyebrow {
+  display: inline-block;
+  font-size: var(--fs-small);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky-blue);
+  margin-bottom: var(--space-sm);
+  opacity: 0.85;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Glassmorphism card                                                     */
+/* ---------------------------------------------------------------------- */
+.glass-card {
+  position: relative;
+  background: var(--glass-fill);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 18px 50px var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,0.25);
+  overflow: hidden;
+  transition: transform var(--dur-fast) var(--ease-silk), box-shadow var(--dur-fast) var(--ease-silk);
+}
+.glass-card:hover {
+  transform: translateY(-6px) rotate(-0.2deg);
+  box-shadow: 0 26px 64px var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Scene 1 — Hero                                                         */
+/* ---------------------------------------------------------------------- */
+#scene-1 { justify-content: flex-end; padding-bottom: 12vh; }
+.hero-birds { position: absolute; top: 8%; left: 0; width: 100%; height: 20%; pointer-events: none; }
+.hero-title {
+  font-size: var(--fs-hero);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+.hero-title .line2 { display: block; font-style: italic; }
+.hero-sub {
+  margin-top: var(--space-sm);
+  font-size: var(--fs-body);
+  color: var(--morning-mist);
+  opacity: 0.85;
+  max-width: 46ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+.scroll-cue {
+  position: absolute;
+  bottom: -6vh;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255,255,255,0.75);
+  font-size: var(--fs-small);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.scroll-cue .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: scrollCue 1.8s ease-in-out infinite; }
+
+/* ---------------------------------------------------------------------- */
+/* Scene 2 — Character + message                                          */
+/* ---------------------------------------------------------------------- */
+#scene-2 .scene-inner {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: var(--space-lg);
+  align-items: center;
+  text-align: left;
+}
+.character-stage { position: relative; display: flex; justify-content: center; }
+.character-glow {
+  position: absolute;
+  width: 340px; height: 340px;
+  background: var(--glow-gradient);
+  filter: blur(10px);
+  border-radius: 50%;
+  z-index: 0;
+}
+.chibi-svg { position: relative; z-index: 1; width: min(78vw, 340px); filter: drop-shadow(0 24px 40px rgba(20,20,70,0.35)); }
+.message-card { padding: clamp(1.6rem, 4vw, 3rem); }
+.message-typewriter {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: var(--fs-h2);
+  min-height: 6em;
+}
+.message-typewriter .tw-line { display: block; opacity: 0; }
+.message-typewriter .tw-line.done { opacity: 1; }
+
+/* ---------------------------------------------------------------------- */
+/* Scene 3 — Journey / floating quotes                                    */
+/* ---------------------------------------------------------------------- */
+#scene-3 { min-height: 220vh; align-items: flex-start; padding-top: var(--space-xl); }
+.journey-track { position: sticky; top: 12vh; width: 100%; height: 76vh; display: flex; align-items: center; justify-content: center; }
+.quote-card {
+  position: absolute;
+  max-width: 460px;
+  padding: clamp(1.4rem, 3vw, 2.2rem);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.2rem, 2.4vw, 1.7rem);
+  opacity: 0;
+}
+.quote-mark { display: block; font-size: 2.4rem; color: var(--blossom-pink); line-height: 0.6; margin-bottom: 0.4rem; }
+
+/* ---------------------------------------------------------------------- */
+/* Scene 4 — Travel                                                       */
+/* ---------------------------------------------------------------------- */
+#scene-4 { min-height: 130vh; }
+.travel-heading { max-width: 60ch; }
+.travel-scape { position: relative; width: 100%; margin-top: var(--space-lg); }
+.travel-scape svg { width: 100%; height: auto; }
+.waterfall {
+  position: absolute;
+  width: 10px;
+  border-radius: 6px;
+  background: repeating-linear-gradient(180deg, rgba(255,255,255,0.9) 0 8px, rgba(167,216,255,0.5) 8px 16px);
+  background-size: 100% 120px;
+  animation: waterfallFlow 1.1s linear infinite;
+  filter: blur(0.3px);
+  opacity: 0.9;
+}
+.compass-wrap {
+  width: 132px; height: 132px;
+  margin: var(--space-md) auto 0;
+  display: grid;
+  place-items: center;
+}
+.compass-wrap svg { width: 100%; height: 100%; }
+#compass-needle { transform-origin: 60px 60px; transition: transform 0.2s linear; }
+.trail-path { stroke-dasharray: 6 10; animation: dashMove 12s linear infinite; }
+@keyframes dashMove { to { stroke-dashoffset: -300; } }
+
+.icon-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  justify-content: center;
+  margin-top: var(--space-lg);
+}
+.icon-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.2rem;
+  border-radius: 999px;
+  font-size: var(--fs-small);
+  letter-spacing: 0.04em;
+}
+.icon-chip svg { width: 18px; height: 18px; stroke: var(--pastel-pink); }
+
+/* ---------------------------------------------------------------------- */
+/* Scene 5 — Anime World                                                  */
+/* ---------------------------------------------------------------------- */
+.anime-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+}
+.anime-card {
+  padding: 1.6rem 1.2rem;
+  text-align: left;
+  cursor: pointer;
+  transform-style: preserve-3d;
+}
+.anime-card .glyph {
+  width: 46px; height: 46px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 0.9rem;
+  background: linear-gradient(135deg, var(--lavender), var(--sky-blue));
+  color: var(--night-deep);
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+.anime-card h3 { font-size: 1.15rem; margin-bottom: 0.3rem; }
+.anime-card p { font-size: var(--fs-small); color: rgba(255,255,255,0.7); }
+
+/* ---------------------------------------------------------------------- */
+/* Final scene — Night sky                                                */
+/* ---------------------------------------------------------------------- */
+#scene-final {
+  min-height: 130vh;
+  overflow: hidden;
+}
+.stars-field { position: absolute; inset: 0; z-index: 0; }
+.star {
+  position: absolute;
+  width: 2px; height: 2px;
+  background: #fff;
+  border-radius: 50%;
+  animation: twinkle 3.4s ease-in-out infinite;
+}
+.moon {
+  position: absolute;
+  top: 8%; right: 10%;
+  width: 110px; height: 110px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 32%, #fff, #F3EFE0 55%, #E4DDC8 100%);
+  box-shadow: 0 0 60px 18px rgba(255,255,255,0.35);
+}
+.moon .crater { position: absolute; border-radius: 50%; background: rgba(0,0,0,0.06); }
+.firefly {
+  position: absolute;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--pastel-pink);
+  box-shadow: 0 0 10px 3px rgba(255,199,230,0.8);
+  animation: fireflyDrift 7s ease-in-out infinite;
+}
+.lantern {
+  position: absolute;
+  bottom: -10%;
+  width: 34px; height: 44px;
+  border-radius: 40% 40% 50% 50%;
+  background: linear-gradient(180deg, var(--blossom-pink), #E8759F);
+  animation: lanternFloat 9s ease-in-out infinite, lanternGlow 3s ease-in-out infinite;
+}
+.lantern::before {
+  content: '';
+  position: absolute; top: -6px; left: 50%; transform: translateX(-50%);
+  width: 14px; height: 4px; border-radius: 3px;
+  background: rgba(255,255,255,0.6);
+}
+.final-title {
+  position: relative;
+  z-index: 2;
+  font-size: clamp(2.4rem, 8vw, 6.5rem);
+  line-height: 1;
+}
+.final-title .name { display: block; margin-top: 0.15em; }
+.handwritten {
+  position: relative; z-index: 2;
+  font-family: var(--font-hand);
+  font-size: var(--fs-hand);
+  color: var(--morning-mist);
+  max-width: 44ch;
+  margin: var(--space-md) auto 0;
+  opacity: 0;
+}
+.constellation { position: absolute; inset: 0; z-index: 1; opacity: 0.5; }
+
+/* ---------------------------------------------------------------------- */
+/* Ending / credits                                                        */
+/* ---------------------------------------------------------------------- */
+#scene-ending {
+  min-height: 80vh;
+  background: linear-gradient(180deg, transparent, rgba(255,255,255,0.05));
+}
+.credits { display: flex; flex-direction: column; gap: var(--space-xs); align-items: center; }
+.credits .role { font-size: var(--fs-small); letter-spacing: 0.18em; text-transform: uppercase; color: var(--sky-blue); }
+.credits .value { font-family: var(--font-display); font-style: italic; font-size: 1.3rem; margin-bottom: var(--space-sm); }
+.rainbow {
+  width: min(560px, 90vw);
+  aspect-ratio: 2 / 1;
+  margin: var(--space-lg) auto 0;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  border-top: 10px solid transparent;
+  border-image: linear-gradient(90deg, var(--blossom-pink), var(--pastel-pink), var(--lavender), var(--sky-blue), var(--deep-blue)) 1;
+  opacity: 0;
+  filter: drop-shadow(0 0 20px rgba(255,255,255,0.25));
+  animation: rainbowRise 2.4s var(--ease-silk) forwards;
+  animation-play-state: paused;
+}
+.rainbow.is-visible { animation-play-state: running; }
+.replay-btn {
+  margin-top: var(--space-lg);
+  padding: 0.9rem 2rem;
+  border-radius: 999px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-fill);
+  color: var(--pure-white);
+  font-size: var(--fs-small);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Buttons / chips generic                                                 */
+/* ---------------------------------------------------------------------- */
+.btn {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-fill);
+  color: var(--pure-white);
+  padding: 0.8rem 1.8rem;
+  border-radius: 999px;
+  font-size: var(--fs-small);
+  letter-spacing: 0.06em;
+  transition: transform var(--dur-fast) var(--ease-silk), background var(--dur-fast);
+}
+.btn:hover { transform: translateY(-3px); background: var(--glass-fill-strong); }
+
+/* ---------------------------------------------------------------------- */
+/* Fixed UI: cursor glow, sound toggle, progress bar                      */
+/* ---------------------------------------------------------------------- */
+#cursor-glow {
+  position: fixed;
+  top: 0; left: 0;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: var(--glow-gradient);
+  z-index: var(--z-cursor);
+  pointer-events: none;
+  mix-blend-mode: screen;
+  animation: cursorPulse 2.6s ease-in-out infinite;
+  will-change: transform;
+}
+
+#ui-bar {
+  position: fixed;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  z-index: var(--z-ui);
+  display: flex;
+  gap: 0.6rem;
+}
+.ui-btn {
+  width: 44px; height: 44px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-fill);
+  backdrop-filter: blur(var(--blur-glass));
+  color: var(--pure-white);
+}
+.ui-btn svg { width: 18px; height: 18px; }
+
+#scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  width: 0%;
+  background: var(--text-gradient);
+  z-index: var(--z-ui);
+  transition: width 0.1s linear;
+}
+
+/* Skip-link for keyboard users */
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: auto;
+}
+.skip-link:focus {
+  left: var(--space-sm);
+  top: var(--space-sm);
+  z-index: 200;
+  background: var(--night-deep);
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+}
+
+/* Visible focus ring for accessibility */
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--sky-blue);
+  outline-offset: 3px;
+}
+
+
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<!-- ======================= LOADING SCREEN ======================= -->
+<div id="loading-screen" aria-hidden="true">
+  <div id="loader-petals"></div>
+  <p class="loader-note">Sakura Rain</p>
+  <p class="loader-text" id="loader-text"></p>
+</div>
+
+<!-- ======================= FIXED BACKDROP LAYERS ======================= -->
+<div id="sky-layer" aria-hidden="true">
+  <div class="sun-rays"></div>
+  <div class="clouds"></div>
+</div>
+<div id="fog-layer" aria-hidden="true"></div>
+<canvas id="rain-canvas" aria-hidden="true"></canvas>
+<div id="tsparticles-petals" aria-hidden="true"></div>
+<canvas id="fireworks-canvas" aria-hidden="true"></canvas>
+<div id="cursor-glow" aria-hidden="true"></div>
+
+<!-- ======================= FIXED UI ======================= -->
+<div id="scroll-progress"></div>
+<div id="ui-bar">
+  <button class="ui-btn" id="sound-toggle" aria-pressed="false" aria-label="Toggle background sound">
+    <svg id="sound-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>
+  </button>
+</div>
+
+<main id="main-content">
+
+
+  <!-- ======================= FINAL SCENE — NIGHT SKY ======================= -->
+  <section class="scene" id="scene-final" data-sky="night">
+    <div class="stars-field" id="stars-field" aria-hidden="true"></div>
+    <svg class="constellation" viewBox="0 0 1200 700" aria-hidden="true">
+      <g stroke="rgba(255,255,255,0.4)" stroke-width="1">
+        <line x1="120" y1="120" x2="220" y2="90"/><line x1="220" y1="90" x2="300" y2="150"/>
+        <line x1="900" y1="500" x2="980" y2="460"/><line x1="980" y1="460" x2="1050" y2="510"/>
+        <line x1="150" y1="520" x2="230" y2="560"/><line x1="230" y1="560" x2="180" y2="610"/>
+      </g>
+    </svg>
+    <div class="moon" aria-hidden="true">
+      <div class="crater" style="width:14px;height:14px;top:20px;left:24px;"></div>
+      <div class="crater" style="width:9px;height:9px;top:50px;left:60px;"></div>
+      <div class="crater" style="width:11px;height:11px;top:70px;left:28px;"></div>
+    </div>
+    <div id="fireflies-final" aria-hidden="true"></div>
+    <div id="lanterns-final" aria-hidden="true"></div>
+
+    <div class="scene-inner reveal">
+      <p class="eyebrow" style="color:var(--pastel-pink)">Under the same sky, always</p>
+      <h2 class="final-title glow-text">
+        <span class="gradient-text">Happy Birthday</span>
+        <span class="name gradient-text">Sanjana</span>
+      </h2>
+      <p class="handwritten" id="handwritten-msg">May every rainy day remind you that the world becomes more beautiful because you are in it. Happy Birthday.</p>
+    </div>
+  </section>
+
+  <!-- ======================= ENDING / CREDITS ======================= -->
+  <section class="scene" id="scene-ending" data-sky="dawn">
+    <div class="scene-inner reveal">
+      <div class="credits">
+        <span class="role">Written for</span><span class="value">Sanjana</span>
+        <span class="role">Season</span><span class="value">Monsoon, with love</span>
+        <span class="role">Soundtrack</span><span class="value">Soft piano &amp; falling rain</span>
+      </div>
+      <div class="rainbow" id="rainbow"></div>
+      <button class="btn replay-btn" id="replay-btn">Watch it again</button>
+    </div>
+  </section>
+
+</main>
+
+<!-- ======================= LIBRARIES (CDN) ======================= -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tsparticles-slim@2.12.0/tsparticles.slim.bundle.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+<!-- ======================= APP MODULES ======================= -->
+<script>
+/* ---- js/particles.js ---- */
+/* ==========================================================================
+   SAKURA RAIN — Particle & Rain Systems
+   Exposes: window.SakuraRain.particles
+   ========================================================================== */
+(function () {
+  window.SakuraRain = window.SakuraRain || {};
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ------------------------------------------------------------------ */
+  /* Rain — hand-rolled Canvas API renderer                              */
+  /* ------------------------------------------------------------------ */
+  const RainEngine = (function () {
+    let canvas, ctx, drops = [];
+    let dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let intensity = 1;      // 0 (none) -> 1 (full)
+    let wind = 0.3;         // -1 (left) -> 1 (right)
+    let running = true;
+    let rafId = null;
+
+    function resize() {
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      canvas.style.width = window.innerWidth + 'px';
+      canvas.style.height = window.innerHeight + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      seed();
+    }
+
+    function seed() {
+      const target = reducedMotion ? 40 : Math.floor((window.innerWidth * window.innerHeight) / 9000);
+      drops = new Array(target).fill(0).map(makeDrop);
+    }
+
+    function makeDrop() {
+      return {
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        len: 14 + Math.random() * 18,
+        speed: 5 + Math.random() * 6,
+        opacity: 0.12 + Math.random() * 0.25
+      };
+    }
+
+    function tick() {
+      if (!running) { rafId = requestAnimationFrame(tick); return; }
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      if (intensity > 0) {
+        ctx.lineCap = 'round';
+        for (const d of drops) {
+          ctx.strokeStyle = `rgba(220,232,255,${d.opacity * intensity})`;
+          ctx.lineWidth = 1.1;
+          ctx.beginPath();
+          ctx.moveTo(d.x, d.y);
+          ctx.lineTo(d.x + wind * d.len * 0.6, d.y + d.len);
+          ctx.stroke();
+
+          d.y += d.speed * intensity;
+          d.x += wind * 1.4;
+
+          if (d.y > window.innerHeight) {
+            d.y = -20;
+            d.x = Math.random() * window.innerWidth;
+          }
+          if (d.x > window.innerWidth + 20) d.x = -20;
+          if (d.x < -20) d.x = window.innerWidth + 20;
+        }
+      }
+      rafId = requestAnimationFrame(tick);
+    }
+
+    function init(canvasEl) {
+      canvas = canvasEl;
+      ctx = canvas.getContext('2d');
+      resize();
+      window.addEventListener('resize', resize);
+      tick();
+    }
+
+    return {
+      init,
+      setIntensity(v) { intensity = Math.max(0, Math.min(1, v)); },
+      getIntensity() { return intensity; },
+      setWind(v) { wind = Math.max(-1, Math.min(1, v)); },
+      pause() { running = false; },
+      resume() { running = true; }
+    };
+  })();
+
+  /* ------------------------------------------------------------------ */
+  /* Sakura petals + sparkles — tsParticles                              */
+  /* ------------------------------------------------------------------ */
+  function initSakuraParticles() {
+    if (!window.tsParticles) return;
+    const count = reducedMotion ? 10 : (window.innerWidth < 700 ? 22 : 42);
+
+    window.tsParticles.load('tsparticles-petals', {
+      fpsLimit: 60,
+      detectRetina: true,
+      particles: {
+        number: { value: count },
+        color: { value: ['#FFC7E6', '#F8AFCB', '#CDB4FF'] },
+        shape: { type: 'circle' },
+        opacity: { value: { min: 0.4, max: 0.9 } },
+        size: { value: { min: 4, max: 9 } },
+        rotate: { value: { min: 0, max: 360 }, animation: { enable: !reducedMotion, speed: 6 } },
+        move: {
+          enable: true,
+          speed: { min: 0.6, max: 1.8 },
+          direction: 'bottom',
+          straight: false,
+          drift: { min: -0.4, max: 0.6 },
+          outModes: { default: 'out', bottom: 'out', top: 'none' }
+        },
+        wobble: { enable: !reducedMotion, distance: 12, speed: { min: 4, max: 8 } },
+        life: { count: 0 }
+      },
+      interactivity: {
+        events: { onHover: { enable: !reducedMotion, mode: 'repulse' }, resize: true },
+        modes: { repulse: { distance: 60, duration: 0.4 } }
+      },
+      emitters: {
+        rate: { quantity: 1, delay: reducedMotion ? 2 : 0.6 },
+        position: { x: 50, y: -5 },
+        size: { width: 100, height: 0 }
+      }
+    });
+  }
+
+  /* Small sparkle burst used on card hover / clicks */
+  function sparkleBurst(x, y) {
+    if (!window.tsParticles || reducedMotion) return;
+    const id = 'burst-' + Math.random().toString(36).slice(2, 8);
+    const el = document.createElement('div');
+    el.id = id;
+    el.style.cssText = `position:fixed; left:0; top:0; width:100%; height:100%; pointer-events:none; z-index:45;`;
+    document.body.appendChild(el);
+
+    window.tsParticles.load(id, {
+      fullScreen: { enable: false },
+      particles: {
+        number: { value: 0 },
+        color: { value: ['#FFC7E6', '#A7D8FF', '#FFFFFF'] },
+        shape: { type: 'star' },
+        opacity: { value: { min: 0.4, max: 1 }, animation: { enable: true, speed: 2, startValue: 'max', destroy: 'min' } },
+        size: { value: { min: 1, max: 3 } },
+        move: { enable: true, speed: 3, decay: 0.08, direction: 'none', outModes: { default: 'destroy' } },
+        life: { duration: { value: 1 }, count: 1 }
+      },
+      emitters: { position: { x: (x / window.innerWidth) * 100, y: (y / window.innerHeight) * 100 }, rate: { quantity: 14, delay: 0 }, life: { count: 1, duration: 0.1 } }
+    }).then(() => {
+      setTimeout(() => el.remove(), 1400);
+    });
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Fireworks — Canvas API burst renderer                               */
+  /* ------------------------------------------------------------------ */
+  const FireworksEngine = (function () {
+    let canvas, ctx, particles = [];
+    let dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    function resize() {
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      canvas.style.width = window.innerWidth + 'px';
+      canvas.style.height = window.innerHeight + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function burst(x, y, hue) {
+      const count = reducedMotion ? 12 : 40;
+      for (let i = 0; i < count; i++) {
+        const angle = (Math.PI * 2 * i) / count;
+        const speed = 1.6 + Math.random() * 2.4;
+        particles.push({
+          x, y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          life: 1,
+          hue: hue + Math.random() * 30 - 15
+        });
+      }
+    }
+
+    function tick() {
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      particles.forEach(p => {
+        p.vy += 0.02; // gravity
+        p.x += p.vx;
+        p.y += p.vy;
+        p.life -= 0.014;
+        if (p.life > 0) {
+          ctx.beginPath();
+          ctx.fillStyle = `hsla(${p.hue}, 90%, 78%, ${p.life})`;
+          ctx.arc(p.x, p.y, 2.2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      });
+      particles = particles.filter(p => p.life > 0);
+      requestAnimationFrame(tick);
+    }
+
+    function init(canvasEl) {
+      canvas = canvasEl;
+      ctx = canvas.getContext('2d');
+      resize();
+      window.addEventListener('resize', resize);
+      tick();
+    }
+
+    return { init, burst };
+  })();
+
+  window.SakuraRain.particles = {
+    RainEngine,
+    FireworksEngine,
+    initSakuraParticles,
+    sparkleBurst,
+    reducedMotion
+  };
+})();
+
+
+/* ---- js/audio.js ---- */
+/* ==========================================================================
+   SAKURA RAIN — Sound Design
+   Exposes: window.SakuraRain.audio
+   NOTE: Drop your own royalty-free audio files into /assets/audio using the
+   filenames below. Missing files fail silently (Howler onloaderror is caught)
+   so the experience still works without sound.
+   ========================================================================== */
+(function () {
+  window.SakuraRain = window.SakuraRain || {};
+  const base = 'assets/audio/';
+  let started = false;
+  let muted = false;
+  let ambient = {};
+  let sfx = {};
+
+  function safeHowl(src, opts) {
+    if (typeof Howl === 'undefined') return null;
+    return new Howl(Object.assign({
+      src: [base + src],
+      onloaderror: () => { /* missing asset — fail silently */ }
+    }, opts));
+  }
+
+  function buildAmbient() {
+    ambient = {
+      piano: safeHowl('piano.mp3', { loop: true, volume: 0.35 }),
+      rain: safeHowl('rain.mp3', { loop: true, volume: 0.28 }),
+      birds: safeHowl('birds.mp3', { loop: true, volume: 0.16 }),
+      wind: safeHowl('wind.mp3', { loop: true, volume: 0.14 }),
+      water: safeHowl('water.mp3', { loop: true, volume: 0.12 }),
+      orchestra: safeHowl('orchestra.mp3', { loop: true, volume: 0 })
+    };
+  }
+
+  function buildSfx() {
+    sfx = {
+      bell: safeHowl('bell.mp3', { volume: 0.4 }),
+      sparkle: safeHowl('sparkle.mp3', { volume: 0.3 }),
+      click: safeHowl('click.mp3', { volume: 0.35 }),
+      achievement: safeHowl('achievement.mp3', { volume: 0.4 }),
+      fireworks: safeHowl('fireworks.mp3', { volume: 0.45 })
+    };
+  }
+
+  function startAmbient() {
+    if (started || typeof Howl === 'undefined') return;
+    started = true;
+    buildAmbient();
+    buildSfx();
+    Object.values(ambient).forEach(h => { if (h) { try { h.play(); } catch (e) {} } });
+  }
+
+  function playSfx(name) {
+    if (muted || !sfx[name]) return;
+    try { sfx[name].play(); } catch (e) {}
+  }
+
+  function fadeOrchestraIn() {
+    if (!ambient.orchestra) return;
+    try {
+      ambient.orchestra.play();
+      ambient.orchestra.fade(0, 0.3, 3000);
+    } catch (e) {}
+  }
+
+  function setMuted(v) {
+    muted = v;
+    if (typeof Howler !== 'undefined') Howler.mute(muted);
+  }
+
+  function isMuted() { return muted; }
+
+  // Browsers require a user gesture before audio can play.
+  function bindAutoplayUnlock() {
+    const unlock = () => {
+      startAmbient();
+      window.removeEventListener('pointerdown', unlock);
+      window.removeEventListener('keydown', unlock);
+      window.removeEventListener('touchstart', unlock);
+    };
+    window.addEventListener('pointerdown', unlock, { once: true });
+    window.addEventListener('keydown', unlock, { once: true });
+    window.addEventListener('touchstart', unlock, { once: true });
+  }
+
+  window.SakuraRain.audio = {
+    bindAutoplayUnlock,
+    startAmbient,
+    playSfx,
+    fadeOrchestraIn,
+    setMuted,
+    isMuted
+  };
+})();
+
+
+/* ---- js/scroll.js ---- */
+/* ==========================================================================
+   SAKURA RAIN — Smooth Scroll (Lenis + GSAP ticker)
+   Exposes: window.SakuraRain.scroll
+   ========================================================================== */
+(function () {
+  window.SakuraRain = window.SakuraRain || {};
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let lenis = null;
+
+  function init() {
+    const progressBar = document.getElementById('scroll-progress');
+
+    if (typeof Lenis !== 'undefined' && !reducedMotion) {
+      lenis = new Lenis({
+        duration: 1.15,
+        easing: (t) => 1 - Math.pow(1 - t, 3),
+        smoothWheel: true,
+        wheelMultiplier: 1
+      });
+
+      if (typeof gsap !== 'undefined') {
+        lenis.on('scroll', () => {
+          if (window.ScrollTrigger) window.ScrollTrigger.update();
+          updateProgress(progressBar);
+        });
+        gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+        gsap.ticker.lagSmoothing(0);
+      } else {
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); updateProgress(progressBar); }
+        requestAnimationFrame(raf);
+      }
+    } else {
+      // Fallback: native scroll, still drive the progress bar.
+      window.addEventListener('scroll', () => updateProgress(progressBar), { passive: true });
+    }
+  }
+
+  function updateProgress(bar) {
+    if (!bar) return;
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop || document.body.scrollTop);
+    const max = h.scrollHeight - h.clientHeight;
+    const pct = max > 0 ? (scrolled / max) * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+
+  function scrollTo(target, opts) {
+    if (lenis) {
+      lenis.scrollTo(target, Object.assign({ duration: 2 }, opts));
+    } else {
+      const el = typeof target === 'number' ? null : document.querySelector(target);
+      window.scrollTo({ top: el ? el.offsetTop : target, behavior: 'smooth' });
+    }
+  }
+
+  window.SakuraRain.scroll = { init, scrollTo, get lenis() { return lenis; } };
+})();
+
+
+/* ---- js/gsap.js ---- */
+/* ==========================================================================
+   SAKURA RAIN — Scene Choreography (GSAP + ScrollTrigger)
+   Exposes: window.SakuraRain.scenes.play()
+   ========================================================================== */
+(function () {
+  window.SakuraRain = window.SakuraRain || {};
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const SKY_MAP = {
+    morning: 'var(--sky-morning)',
+    day: 'var(--sky-day)',
+    dusk: 'var(--sky-dusk)',
+    night: 'var(--sky-night)',
+    dawn: 'var(--sky-dawn)'
+  };
+
+  function play() {
+    if (typeof gsap === 'undefined') { fallbackReveal(); return; }
+    gsap.registerPlugin(window.ScrollTrigger);
+
+    revealOnScroll();
+    skyTransitions();
+    heroParallax();
+    birdsFly();
+    typewriterScene2();
+    journeyQuotes();
+    compassRotate();
+    animeCardInteractions();
+    finalSceneSequence();
+    endingSequence();
+    cursorGlow();
+  }
+
+  /* ---------------- Fallback if CDN scripts fail to load ---------------- */
+  function fallbackReveal() {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('is-visible'));
+    document.querySelectorAll('.tw-line').forEach(el => { el.textContent = el.dataset.text; el.classList.add('done'); });
+  }
+
+  /* ---------------- Generic reveal-on-scroll for .reveal elements ------- */
+  function revealOnScroll() {
+    document.querySelectorAll('.reveal').forEach(el => {
+      ScrollTrigger.create({
+        trigger: el,
+        start: 'top 88%',
+        onEnter: () => el.classList.add('is-visible'),
+        onEnterBack: () => el.classList.add('is-visible')
+      });
+    });
+  }
+
+  /* ---------------- Sky gradient swap per scene -------------------------- */
+  function skyTransitions() {
+    const sky = document.getElementById('sky-layer');
+    document.querySelectorAll('.scene[data-sky]').forEach(scene => {
+      const grad = SKY_MAP[scene.dataset.sky] || SKY_MAP.day;
+      ScrollTrigger.create({
+        trigger: scene,
+        start: 'top 55%',
+        end: 'bottom 45%',
+        onEnter: () => sky.style.background = grad,
+        onEnterBack: () => sky.style.background = grad
+      });
+    });
+  }
+
+  /* ---------------- Hero parallax: mountains + soft zoom ------------------ */
+  function heroParallax() {
+    const scene1 = document.getElementById('scene-1');
+    const mountains = scene1.querySelector('.mountains');
+    if (reducedMotion) return;
+    gsap.to(mountains, {
+      yPercent: 12,
+      ease: 'none',
+      scrollTrigger: { trigger: scene1, start: 'top top', end: 'bottom top', scrub: 0.6 }
+    });
+    gsap.to('#hero-reveal', {
+      yPercent: -18,
+      opacity: 0.4,
+      ease: 'none',
+      scrollTrigger: { trigger: scene1, start: 'top top', end: 'bottom top', scrub: 0.6 }
+    });
+  }
+
+  /* ---------------- Birds gently flying across the hero ------------------- */
+  function birdsFly() {
+    ['#bird-1', '#bird-2', '#bird-3'].forEach((sel, i) => {
+      const el = document.querySelector(sel);
+      if (!el) return;
+      gsap.to(el, {
+        x: '+=120', y: '-=18',
+        duration: 6 + i * 1.4,
+        repeat: -1, yoyo: true, ease: 'sine.inOut'
+      });
+    });
+  }
+
+  /* ---------------- Scene 2 typewriter ------------------------------------ */
+  function typewriterScene2() {
+    const wrap = document.getElementById('scene2-typewriter');
+    if (!wrap) return;
+    const lines = wrap.querySelectorAll('.tw-line');
+    let typed = false;
+
+    ScrollTrigger.create({
+      trigger: wrap,
+      start: 'top 75%',
+      onEnter: () => { if (!typed) { typed = true; typeSequence(Array.from(lines)); } }
+    });
+  }
+
+  function typeSequence(lines, i = 0) {
+    if (i >= lines.length) return;
+    const el = lines[i];
+    const text = el.dataset.text || '';
+    el.classList.add('done');
+    el.innerHTML = '<span class="caret"></span>';
+    let c = 0;
+    const speed = reducedMotion ? 0 : 32;
+    const step = () => {
+      c++;
+      el.innerHTML = text.slice(0, c) + '<span class="caret"></span>';
+      if (c < text.length) {
+        setTimeout(step, speed);
+      } else {
+        el.innerHTML = text;
+        setTimeout(() => typeSequence(lines, i + 1), 380);
+      }
+    };
+    if (reducedMotion) { el.textContent = text; typeSequence(lines, i + 1); }
+    else step();
+  }
+
+  /* ---------------- Scene 3: pinned journey with floating quotes --------- */
+  function journeyQuotes() {
+    const section = document.getElementById('scene-3');
+    const cards = gsap.utils.toArray('.quote-card');
+    const positions = [
+      { x: -160, y: -60, rot: -4 },
+      { x: 140, y: 20, rot: 3 },
+      { x: -120, y: 80, rot: -2 },
+      { x: 100, y: -90, rot: 4 }
+    ];
+    cards.forEach((card, i) => {
+      gsap.set(card, { xPercent: -50, yPercent: -50, left: '50%', top: '50%', x: positions[i].x, y: positions[i].y, rotate: positions[i].rot });
+    });
+
+    if (reducedMotion) {
+      cards.forEach(c => gsap.set(c, { opacity: 1 }));
+      return;
+    }
+
+    const segment = 1 / cards.length;
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.7,
+        onUpdate: (self) => {
+          // Let rain lean with scroll velocity — a living, reactive sky.
+          const wind = gsap.utils.clamp(-1, 1, self.getVelocity() / 2500);
+          if (window.SakuraRain.particles) window.SakuraRain.particles.RainEngine.setWind(wind);
+        }
+      }
+    });
+
+    cards.forEach((card, i) => {
+      const start = i * segment;
+      tl.to(card, { opacity: 1, duration: segment * 0.35 }, start)
+        .to(card, { opacity: 1, duration: segment * 0.3 }, start + segment * 0.35)
+        .to(card, { opacity: 0, duration: segment * 0.35 }, start + segment * 0.65);
+    });
+  }
+
+  /* ---------------- Scene 4: compass needle tied to scroll ---------------- */
+  function compassRotate() {
+    const needle = document.getElementById('compass-needle');
+    const scene = document.getElementById('scene-4');
+    if (!needle) return;
+    gsap.to(needle, {
+      rotate: 340,
+      ease: 'none',
+      scrollTrigger: { trigger: scene, start: 'top bottom', end: 'bottom top', scrub: 0.5 }
+    });
+  }
+
+  /* ---------------- Scene 5: anime cards — tilt.js + sparkle + sfx -------- */
+  function animeCardInteractions() {
+    const cards = document.querySelectorAll('.anime-card');
+    if (window.VanillaTilt) {
+      window.VanillaTilt.init(Array.from(cards), { max: 8, speed: 400, glare: true, 'max-glare': 0.25 });
+    }
+    cards.forEach(card => {
+      card.addEventListener('mouseenter', (e) => {
+        if (window.SakuraRain.particles) window.SakuraRain.particles.sparkleBurst(e.clientX, e.clientY);
+        if (window.SakuraRain.audio) window.SakuraRain.audio.playSfx('sparkle');
+      });
+      card.addEventListener('click', (e) => {
+        if (window.SakuraRain.audio) window.SakuraRain.audio.playSfx('achievement');
+        if (window.SakuraRain.particles) window.SakuraRain.particles.sparkleBurst(e.clientX, e.clientY);
+      });
+    });
+  }
+
+  /* ---------------- Final scene: rain fades out, fireworks, message ------- */
+  function finalSceneSequence() {
+    const scene = document.getElementById('scene-final');
+    let fired = false;
+    ScrollTrigger.create({
+      trigger: scene,
+      start: 'top 60%',
+      onEnter: () => {
+        if (fired) return;
+        fired = true;
+        if (window.SakuraRain.particles) {
+          gsap.to({ v: window.SakuraRain.particles.RainEngine.getIntensity() }, {
+            v: 0.15, duration: 2.4, onUpdate: function () { window.SakuraRain.particles.RainEngine.setIntensity(this.targets()[0].v); }
+          });
+          launchFireworks();
+        }
+        if (window.SakuraRain.audio) {
+          window.SakuraRain.audio.playSfx('bell');
+          window.SakuraRain.audio.fadeOrchestraIn();
+          setTimeout(() => window.SakuraRain.audio.playSfx('fireworks'), 400);
+        }
+        gsap.to('#handwritten-msg', { opacity: 1, duration: 1.6, delay: 0.6, ease: 'power2.out' });
+      }
+    });
+  }
+
+  function launchFireworks() {
+    const fx = window.SakuraRain.particles.FireworksEngine;
+    const hues = [330, 280, 210, 340];
+    let i = 0;
+    const shoot = () => {
+      if (i >= 5) return;
+      const x = window.innerWidth * (0.25 + Math.random() * 0.5);
+      const y = window.innerHeight * (0.2 + Math.random() * 0.35);
+      fx.burst(x, y, hues[i % hues.length]);
+      i++;
+      setTimeout(shoot, 700);
+    };
+    shoot();
+  }
+
+  /* ---------------- Ending: rainbow + clouds parting ----------------------- */
+  function endingSequence() {
+    const scene = document.getElementById('scene-ending');
+    const rainbow = document.getElementById('rainbow');
+    const clouds = document.querySelector('#sky-layer .clouds');
+    ScrollTrigger.create({
+      trigger: scene,
+      start: 'top 70%',
+      onEnter: () => {
+        rainbow.classList.add('is-visible');
+        if (clouds) gsap.to(clouds, { opacity: 0.15, duration: 2 });
+        if (window.SakuraRain.particles) window.SakuraRain.particles.RainEngine.setIntensity(0);
+      }
+    });
+  }
+
+  /* ---------------- Cursor glow follow (desktop only) ---------------------- */
+  function cursorGlow() {
+    const glow = document.getElementById('cursor-glow');
+    if (!glow || window.matchMedia('(hover: none)').matches) return;
+    const quickX = gsap.quickTo(glow, 'x', { duration: 0.5, ease: 'power3.out' });
+    const quickY = gsap.quickTo(glow, 'y', { duration: 0.5, ease: 'power3.out' });
+    window.addEventListener('mousemove', (e) => { quickX(e.clientX); quickY(e.clientY); });
+  }
+
+  window.SakuraRain.scenes = { play };
+})();
+
+
+/* ---- js/main.js ---- */
+/* ==========================================================================
+   SAKURA RAIN — App Bootstrap
+   ========================================================================== */
+(function () {
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.addEventListener('DOMContentLoaded', () => {
+    buildLoaderPetals();
+    runLoadingSequence();
+    buildStarsField();
+    buildFireflies();
+    buildLanterns();
+    wireSoundToggle();
+    wireReplayButton();
+
+    if (window.lucide) lucide.createIcons();
+  });
+
+  /* ---------------- Loading screen: petals + typewriter intro ------------- */
+  function buildLoaderPetals() {
+    const host = document.getElementById('loader-petals');
+    const count = reducedMotion ? 6 : 18;
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('span');
+      p.className = 'loader-petal';
+      p.style.left = Math.random() * 100 + 'vw';
+      p.style.animationDuration = (6 + Math.random() * 5) + 's';
+      p.style.animationDelay = (Math.random() * 5) + 's';
+      p.style.opacity = String(0.5 + Math.random() * 0.5);
+      host.appendChild(p);
+    }
+  }
+
+  function runLoadingSequence() {
+    const textEl = document.getElementById('loader-text');
+    const full = 'Every beautiful story begins with a single blossom…';
+    const screen = document.getElementById('loading-screen');
+
+    const finish = () => {
+      startExperience();
+      screen.classList.add('hidden');
+      setTimeout(() => { screen.style.display = 'none'; }, 1500);
+    };
+
+    if (reducedMotion) {
+      textEl.textContent = full;
+      setTimeout(finish, 900);
+      return;
+    }
+
+    let i = 0;
+    const speed = 42;
+    (function type() {
+      i++;
+      textEl.textContent = full.slice(0, i);
+      if (i < full.length) {
+        setTimeout(type, speed);
+      } else {
+        setTimeout(finish, 1100);
+      }
+    })();
+
+    // Safety net: never trap the user on the loading screen.
+    setTimeout(finish, 6000);
+  }
+
+  let started = false;
+  function startExperience() {
+    if (started) return;
+    started = true;
+
+    const rainCanvas = document.getElementById('rain-canvas');
+    const fireworksCanvas = document.getElementById('fireworks-canvas');
+
+    if (window.SakuraRain.particles) {
+      window.SakuraRain.particles.RainEngine.init(rainCanvas);
+      window.SakuraRain.particles.RainEngine.setIntensity(0.9);
+      window.SakuraRain.particles.initSakuraParticles();
+      window.SakuraRain.particles.FireworksEngine.init(fireworksCanvas);
+    }
+    if (window.SakuraRain.scroll) window.SakuraRain.scroll.init();
+    if (window.SakuraRain.scenes) window.SakuraRain.scenes.play();
+    if (window.SakuraRain.audio) window.SakuraRain.audio.bindAutoplayUnlock();
+
+    // First reveal batch for content already in view (hero).
+    document.querySelectorAll('.reveal').forEach(el => {
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight * 0.9) el.classList.add('is-visible');
+    });
+  }
+
+  /* ---------------- Final scene ambience: stars / fireflies / lanterns ---- */
+  function buildStarsField() {
+    const host = document.getElementById('stars-field');
+    const count = reducedMotion ? 30 : 90;
+    for (let i = 0; i < count; i++) {
+      const s = document.createElement('span');
+      s.className = 'star';
+      s.style.left = Math.random() * 100 + '%';
+      s.style.top = Math.random() * 70 + '%';
+      s.style.animationDelay = (Math.random() * 4) + 's';
+      s.style.animationDuration = (2.4 + Math.random() * 2.4) + 's';
+      host.appendChild(s);
+    }
+  }
+
+  function buildFireflies() {
+    const host = document.getElementById('fireflies-final');
+    const count = reducedMotion ? 4 : 14;
+    for (let i = 0; i < count; i++) {
+      const f = document.createElement('span');
+      f.className = 'firefly';
+      f.style.left = Math.random() * 100 + '%';
+      f.style.top = (30 + Math.random() * 60) + '%';
+      f.style.animationDelay = (Math.random() * 6) + 's';
+      f.style.animationDuration = (5 + Math.random() * 4) + 's';
+      host.appendChild(f);
+    }
+  }
+
+  function buildLanterns() {
+    const host = document.getElementById('lanterns-final');
+    const count = reducedMotion ? 3 : 8;
+    for (let i = 0; i < count; i++) {
+      const l = document.createElement('span');
+      l.className = 'lantern';
+      l.style.left = (5 + Math.random() * 90) + '%';
+      l.style.animationDelay = (Math.random() * 6) + 's, ' + (Math.random() * 3) + 's';
+      l.style.animationDuration = (8 + Math.random() * 5) + 's, ' + (2.4 + Math.random() * 1.6) + 's';
+      host.appendChild(l);
+    }
+  }
+
+  /* ---------------- Sound toggle ------------------------------------------ */
+  function wireSoundToggle() {
+    const btn = document.getElementById('sound-toggle');
+    if (!btn) return;
+    let muted = false;
+    btn.addEventListener('click', () => {
+      muted = !muted;
+      if (window.SakuraRain.audio) {
+        window.SakuraRain.audio.setMuted(muted);
+        window.SakuraRain.audio.startAmbient();
+      }
+      btn.setAttribute('aria-pressed', String(muted));
+      btn.style.opacity = muted ? '0.5' : '1';
+    });
+  }
+
+  /* ---------------- Replay button ------------------------------------------ */
+  function wireReplayButton() {
+    const btn = document.getElementById('replay-btn');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      if (window.SakuraRain.audio) window.SakuraRain.audio.playSfx('click');
+      if (window.SakuraRain.scroll) window.SakuraRain.scroll.scrollTo(0, { duration: 2.2 });
+      else window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+})();
+
+
+/* ---- script.js ---- */
+/* ==========================================================================
+   SAKURA RAIN — script.js
+   Root entry point. js/main.js handles boot + ambience; this file layers on
+   the small, page-wide micro-interactions that make the experience feel alive.
+   ========================================================================== */
+(function () {
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.addEventListener('DOMContentLoaded', () => {
+    wireButtonRipples();
+    wireGlassTilt();
+    wirePetalScatterOnClick();
+    if (!reducedMotion) wireMouseTrail();
+  });
+
+  /* ---------------- Buttons ripple on click -------------------------------- */
+  function wireButtonRipples() {
+    document.querySelectorAll('.btn, .ui-btn').forEach(btn => {
+      btn.style.position = btn.style.position || 'relative';
+      btn.addEventListener('click', (e) => {
+        const rect = btn.getBoundingClientRect();
+        const ripple = document.createElement('span');
+        const size = Math.max(rect.width, rect.height) * 1.4;
+        ripple.className = 'ripple-el';
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+        ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+        btn.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 700);
+      });
+    });
+  }
+
+  /* ---------------- Subtle glass-card tilt following the cursor ------------ */
+  function wireGlassTilt() {
+    if (reducedMotion) return;
+    document.querySelectorAll('.message-card, .quote-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const px = (e.clientX - rect.left) / rect.width - 0.5;
+        const py = (e.clientY - rect.top) / rect.height - 0.5;
+        card.style.transform = `rotateX(${(-py * 5).toFixed(2)}deg) rotateY(${(px * 6).toFixed(2)}deg)`;
+      });
+      card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+      card.style.transformStyle = 'preserve-3d';
+    });
+  }
+
+  /* ---------------- Petals scatter softly on click -------------------------- */
+  function wirePetalScatterOnClick() {
+    let lastBurst = 0;
+    document.addEventListener('click', (e) => {
+      const now = Date.now();
+      if (now - lastBurst < 350) return; // gentle throttle
+      lastBurst = now;
+      if (window.SakuraRain && window.SakuraRain.particles) {
+        window.SakuraRain.particles.sparkleBurst(e.clientX, e.clientY);
+      }
+    });
+  }
+
+  /* ---------------- Faint mouse-trail sparkle dots -------------------------- */
+  function wireMouseTrail() {
+    let lastSpawn = 0;
+    window.addEventListener('mousemove', (e) => {
+      const now = Date.now();
+      if (now - lastSpawn < 55) return;
+      lastSpawn = now;
+      const dot = document.createElement('span');
+      dot.style.cssText = `
+        position:fixed; left:${e.clientX}px; top:${e.clientY}px;
+        width:4px; height:4px; border-radius:50%;
+        background:radial-gradient(circle, rgba(255,255,255,0.9), rgba(255,199,230,0));
+        pointer-events:none; z-index:79; transform:translate(-50%,-50%);
+        transition: opacity 0.8s ease, transform 0.8s ease;
+      `;
+      document.body.appendChild(dot);
+      requestAnimationFrame(() => {
+        dot.style.opacity = '0';
+        dot.style.transform = 'translate(-50%,-50%) scale(2.4)';
+      });
+      setTimeout(() => dot.remove(), 850);
+    });
+  }
+})();
+
+</script>
+
+</body>
+</html>
