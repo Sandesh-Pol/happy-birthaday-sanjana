@@ -64,8 +64,12 @@ export default function SanjanaExperience() {
     if (!el) return;
     let x = window.innerWidth / 2;
     let y = window.innerHeight / 2;
-    let tx = x, ty = y;
-    const onMove = (e: MouseEvent) => { tx = e.clientX; ty = e.clientY; };
+    let tx = x,
+      ty = y;
+    const onMove = (e: MouseEvent) => {
+      tx = e.clientX;
+      ty = e.clientY;
+    };
     window.addEventListener("mousemove", onMove);
     let raf = 0;
     const loop = () => {
@@ -75,7 +79,10 @@ export default function SanjanaExperience() {
       raf = requestAnimationFrame(loop);
     };
     loop();
-    return () => { window.removeEventListener("mousemove", onMove); cancelAnimationFrame(raf); };
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      cancelAnimationFrame(raf);
+    };
   }, []);
 
   /* ------------------------------------------------------------------ */
@@ -103,7 +110,9 @@ export default function SanjanaExperience() {
         lenis = new Lenis({ smoothWheel: true, lerp: 0.09, wheelMultiplier: 0.95 });
         lenisRef.current = lenis;
         lenis.on("scroll", ScrollTrigger.update);
-        const raf = (time: number) => { lenis.raf(time * 1000); };
+        const raf = (time: number) => {
+          lenis.raf(time * 1000);
+        };
         gsap.ticker.add(raf);
         gsap.ticker.lagSmoothing(0);
       }
@@ -114,8 +123,11 @@ export default function SanjanaExperience() {
         const split = new SplitType(el, { types: "chars,words" });
         gsap.from(split.chars, {
           scrollTrigger: { trigger: el, start: "top 82%" },
-          yPercent: 110, opacity: 0, ease: "power3.out",
-          duration: 0.9, stagger: 0.02,
+          yPercent: 110,
+          opacity: 0,
+          ease: "power3.out",
+          duration: 0.9,
+          stagger: 0.02,
         });
       });
 
@@ -124,7 +136,10 @@ export default function SanjanaExperience() {
       reveals.forEach((el) => {
         gsap.to(el, {
           scrollTrigger: { trigger: el, start: "top 85%" },
-          opacity: 1, y: 0, duration: 1.0, ease: "power2.out",
+          opacity: 1,
+          y: 0,
+          duration: 1.0,
+          ease: "power2.out",
         });
       });
 
@@ -151,7 +166,9 @@ export default function SanjanaExperience() {
       };
     })();
 
-    return () => { cleanup?.(); };
+    return () => {
+      cleanup?.();
+    };
   }, [loading]);
 
   /* ------------------------------------------------------------------ */
@@ -163,14 +180,17 @@ export default function SanjanaExperience() {
     if (!el) return;
     let cancelled = false;
     const run = async () => {
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            io.disconnect();
-            typeLines();
-          }
-        });
-      }, { threshold: 0.4 });
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              io.disconnect();
+              typeLines();
+            }
+          });
+        },
+        { threshold: 0.4 },
+      );
       io.observe(el);
       const typeLines = async () => {
         el.textContent = "";
@@ -191,7 +211,9 @@ export default function SanjanaExperience() {
       };
     };
     run();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [loading]);
 
   /* ------------------------------------------------------------------ */
@@ -224,7 +246,8 @@ export default function SanjanaExperience() {
             move: { enable: true, direction: "bottom", speed: 18, straight: true },
             rotate: { value: 12, direction: "clockwise" },
           },
-          detectRetina: true, background: { color: "transparent" },
+          detectRetina: true,
+          background: { color: "transparent" },
         },
         winter: {
           fpsLimit: 60,
@@ -236,7 +259,8 @@ export default function SanjanaExperience() {
             size: { value: { min: 1, max: 3.5 } },
             move: { enable: true, direction: "bottom", speed: 1.2, drift: 0.4, outModes: "out" },
           },
-          detectRetina: true, background: { color: "transparent" },
+          detectRetina: true,
+          background: { color: "transparent" },
         },
         blossom: {
           fpsLimit: 60,
@@ -247,11 +271,15 @@ export default function SanjanaExperience() {
             opacity: { value: { min: 0.5, max: 0.9 } },
             size: { value: { min: 3, max: 7 } },
             move: {
-              enable: true, direction: "bottom-right", speed: 1.6,
-              drift: 1.2, outModes: "out",
+              enable: true,
+              direction: "bottom-right",
+              speed: 1.6,
+              drift: 1.2,
+              outModes: "out",
             },
           },
-          detectRetina: true, background: { color: "transparent" },
+          detectRetina: true,
+          background: { color: "transparent" },
         },
         night: {
           fpsLimit: 60,
@@ -259,11 +287,15 @@ export default function SanjanaExperience() {
             number: { value: 200 },
             color: { value: "#ffffff" },
             shape: { type: "circle" },
-            opacity: { value: { min: 0.2, max: 1 }, animation: { enable: true, speed: 1.2, sync: false } },
+            opacity: {
+              value: { min: 0.2, max: 1 },
+              animation: { enable: true, speed: 1.2, sync: false },
+            },
             size: { value: { min: 0.4, max: 1.6 } },
             move: { enable: true, speed: 0.15 },
           },
-          detectRetina: true, background: { color: "transparent" },
+          detectRetina: true,
+          background: { color: "transparent" },
         },
         celebrate: {
           fpsLimit: 60,
@@ -275,7 +307,8 @@ export default function SanjanaExperience() {
             size: { value: { min: 1, max: 3 } },
             move: { enable: true, speed: 0.8, direction: "top", outModes: "out" },
           },
-          detectRetina: true, background: { color: "transparent" },
+          detectRetina: true,
+          background: { color: "transparent" },
         },
       };
 
@@ -355,8 +388,14 @@ export default function SanjanaExperience() {
         }
         const confetti = confettiRef.current;
         confetti({ particleCount: 160, spread: 90, startVelocity: 45, origin: { y: 0.7 } });
-        setTimeout(() => confetti({ particleCount: 120, angle: 60, spread: 70, origin: { x: 0 } }), 400);
-        setTimeout(() => confetti({ particleCount: 120, angle: 120, spread: 70, origin: { x: 1 } }), 700);
+        setTimeout(
+          () => confetti({ particleCount: 120, angle: 60, spread: 70, origin: { x: 0 } }),
+          400,
+        );
+        setTimeout(
+          () => confetti({ particleCount: 120, angle: 120, spread: 70, origin: { x: 1 } }),
+          700,
+        );
       })();
     } else {
       fw.stop();
@@ -373,9 +412,30 @@ export default function SanjanaExperience() {
       const { Howl } = await import("howler");
       if (disposed) return;
       // Public CDN loops (kept small and cross-origin friendly).
-      const rain = new Howl({ src: ["https://cdn.pixabay.com/download/audio/2022/03/10/audio_c8c8a73467.mp3?filename=rain-and-thunder-sfx-12820.mp3"], loop: true, volume: 0, html5: true });
-      const piano = new Howl({ src: ["https://cdn.pixabay.com/download/audio/2022/10/25/audio_946bc5b0e0.mp3?filename=relaxing-piano-music-116891.mp3"], loop: true, volume: 0, html5: true });
-      const celebrate = new Howl({ src: ["https://cdn.pixabay.com/download/audio/2022/03/15/audio_1ea1b1b25c.mp3?filename=happy-birthday-instrumental-116932.mp3"], loop: true, volume: 0, html5: true });
+      const rain = new Howl({
+        src: [
+          "https://cdn.pixabay.com/download/audio/2022/03/10/audio_c8c8a73467.mp3?filename=rain-and-thunder-sfx-12820.mp3",
+        ],
+        loop: true,
+        volume: 0,
+        html5: true,
+      });
+      const piano = new Howl({
+        src: [
+          "https://cdn.pixabay.com/download/audio/2022/10/25/audio_946bc5b0e0.mp3?filename=relaxing-piano-music-116891.mp3",
+        ],
+        loop: true,
+        volume: 0,
+        html5: true,
+      });
+      const celebrate = new Howl({
+        src: [
+          "https://cdn.pixabay.com/download/audio/2022/03/15/audio_1ea1b1b25c.mp3?filename=happy-birthday-instrumental-116932.mp3",
+        ],
+        loop: true,
+        volume: 0,
+        html5: true,
+      });
       soundsRef.current = { rain, piano, celebrate };
       setAudioReady(true);
     })();
@@ -417,7 +477,9 @@ export default function SanjanaExperience() {
       const y = e.clientY - (r.top + r.height / 2);
       btn.style.transform = `translate(${x * 0.25}px, ${y * 0.35}px)`;
     };
-    const onLeave = () => { btn.style.transform = ""; };
+    const onLeave = () => {
+      btn.style.transform = "";
+    };
     btn.addEventListener("mousemove", onMove);
     btn.addEventListener("mouseleave", onLeave);
     return () => {
@@ -444,7 +506,9 @@ export default function SanjanaExperience() {
             <div className="sj-loader__ring" aria-hidden />
             <div className="sj-loader__label">A Birthday Note For</div>
             <div className="sj-loader__title">Sanjana</div>
-            <div className="sj-loader__bar" aria-hidden><span style={{ width: `${loadProgress}%` }} /></div>
+            <div className="sj-loader__bar" aria-hidden>
+              <span style={{ width: `${loadProgress}%` }} />
+            </div>
           </div>
         </div>
       )}
@@ -453,7 +517,11 @@ export default function SanjanaExperience() {
       <div className={bgClass} aria-hidden />
       <div ref={particlesRef} className={`sj-particles ${loading ? "" : "is-on"}`} aria-hidden />
       <div className={`sj-aurora ${activeScene === "night" ? "is-on" : ""}`} aria-hidden />
-      <div ref={fireworksRef} className={`sj-fireworks ${activeScene === "celebrate" ? "is-on" : ""}`} aria-hidden />
+      <div
+        ref={fireworksRef}
+        className={`sj-fireworks ${activeScene === "celebrate" ? "is-on" : ""}`}
+        aria-hidden
+      />
       <div ref={cursorRef} className="sj-cursor" aria-hidden />
 
       {/* HUD */}
@@ -471,8 +539,12 @@ export default function SanjanaExperience() {
         {/* Scene 1 — Rainy Night */}
         <section className="sj-scene" data-scene="rain" aria-labelledby="sc-rain">
           <div className="sj-scene__inner">
-            <span className="sj-eyebrow"><span className="dot" /> Chapter One · Rain</span>
-            <h1 id="sc-rain" className="sj-title" data-split>Happy Birthday, Sanjana.</h1>
+            <span className="sj-eyebrow">
+              <span className="dot" /> Chapter One · Rain
+            </span>
+            <h1 id="sc-rain" className="sj-title" data-split>
+              Happy Birthday, Sanjana.
+            </h1>
             <div className="sj-glass sj-reveal" style={{ marginTop: "1.5rem" }}>
               <div ref={typingRef} className="sj-typing" aria-live="polite" />
             </div>
@@ -483,15 +555,23 @@ export default function SanjanaExperience() {
         </section>
 
         {/* Scene 2 — Winter */}
-        <section className="sj-scene sj-scene--winter" data-scene="winter" aria-labelledby="sc-winter">
+        <section
+          className="sj-scene sj-scene--winter"
+          data-scene="winter"
+          aria-labelledby="sc-winter"
+        >
           <div className="sj-scene__inner">
-            <span className="sj-eyebrow"><span className="dot" /> Chapter Two · Winter</span>
-            <h2 id="sc-winter" className="sj-title" data-split>Thank you for being you.</h2>
+            <span className="sj-eyebrow">
+              <span className="dot" /> Chapter Two · Winter
+            </span>
+            <h2 id="sc-winter" className="sj-title" data-split>
+              Thank you for being you.
+            </h2>
             <div className="sj-glass sj-reveal">
               <p className="sj-lede">
-                You have a way of making ordinary days feel lighter. Thank you for the
-                late-night talks, the laughs that come out of nowhere, and the way you
-                always show up with kindness.
+                You have a way of making ordinary days feel lighter. Thank you for the late-night
+                talks, the laughs that come out of nowhere, and the way you always show up with
+                kindness.
               </p>
               <p className="sj-lede" style={{ marginTop: "1rem" }}>
                 Being around you makes life feel softer and better.
@@ -501,14 +581,22 @@ export default function SanjanaExperience() {
         </section>
 
         {/* Scene 3 — Cherry Blossoms */}
-        <section className="sj-scene sj-scene--blossom" data-scene="blossom" aria-labelledby="sc-blossom">
+        <section
+          className="sj-scene sj-scene--blossom"
+          data-scene="blossom"
+          aria-labelledby="sc-blossom"
+        >
           <div className="sj-scene__inner">
-            <span className="sj-eyebrow"><span className="dot" /> Chapter Three · Blossoms</span>
-            <h2 id="sc-blossom" className="sj-title" data-split>May your year feel gentle.</h2>
+            <span className="sj-eyebrow">
+              <span className="dot" /> Chapter Three · Blossoms
+            </span>
+            <h2 id="sc-blossom" className="sj-title" data-split>
+              May your year feel gentle.
+            </h2>
             <div className="sj-glass sj-reveal">
               <p className="sj-lede">
-                I hope this year brings you easy mornings, warm people, and a lot more
-                reasons to smile without even trying.
+                I hope this year brings you easy mornings, warm people, and a lot more reasons to
+                smile without even trying.
               </p>
               <p className="sj-lede" style={{ marginTop: "1rem" }}>
                 And when the day is loud, I hope it still leaves room for peace.
@@ -520,12 +608,17 @@ export default function SanjanaExperience() {
         {/* Scene 4 — Night sky + lanterns */}
         <section className="sj-scene" data-scene="night" aria-labelledby="sc-night">
           <div className="sj-scene__inner">
-            <span className="sj-eyebrow"><span className="dot" /> Chapter Four · Night Sky</span>
-            <h2 id="sc-night" className="sj-title" data-split>A few wishes for your year ahead.</h2>
+            <span className="sj-eyebrow">
+              <span className="dot" /> Chapter Four · Night Sky
+            </span>
+            <h2 id="sc-night" className="sj-title" data-split>
+              A few wishes for your year ahead.
+            </h2>
             <div className="sj-glass sj-reveal">
               <p className="sj-lede">
                 I wish you health, calm, and the courage to go after the things that matter to you.
-                I wish you good people, steady days, and plenty of reasons to feel proud of yourself.
+                I wish you good people, steady days, and plenty of reasons to feel proud of
+                yourself.
               </p>
               <p className="sj-lede" style={{ marginTop: "1rem" }}>
                 On the heavy days, please remember that you are loved more than you know.
@@ -537,14 +630,16 @@ export default function SanjanaExperience() {
         {/* Scene 5 — Celebration */}
         <section className="sj-scene" data-scene="celebrate" aria-labelledby="sc-celebrate">
           <div className="sj-scene__inner">
-            <span className="sj-eyebrow"><span className="dot" /> Chapter Five · Celebration</span>
-            <h2 id="sc-celebrate" className="sj-title" data-split>Happy Birthday, Sanjana.</h2>
+            <span className="sj-eyebrow">
+              <span className="dot" /> Chapter Five · Celebration
+            </span>
+            <h2 id="sc-celebrate" className="sj-title" data-split>
+              Happy Birthday, Sanjana.
+            </h2>
 
             <div className="sj-letter sj-reveal" style={{ marginTop: "1.5rem" }}>
               <p>Dear Sanjana,</p>
-              <p>
-                Happy Birthday. I hope today feels warm, easy, and full of love.
-              </p>
+              <p>Happy Birthday. I hope today feels warm, easy, and full of love.</p>
               <p>
                 Thank you for the laughter, the care you give so naturally, and all the small
                 moments that make life brighter around you.

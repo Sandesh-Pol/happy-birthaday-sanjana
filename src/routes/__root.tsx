@@ -9,8 +9,6 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
-
-
 import appCss from "../styles.css?url";
 
 function NotFoundComponent() {
@@ -79,10 +77,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "For Sanjana — A Birthday Story" },
-      { name: "description", content: "A cinematic, interactive birthday letter for Sanjana — rainy nights, cherry blossoms, lanterns and fireworks." },
+      {
+        name: "description",
+        content:
+          "A cinematic, interactive birthday letter for Sanjana — rainy nights, cherry blossoms, lanterns and fireworks.",
+      },
       { name: "author", content: "Your best friend" },
       { property: "og:title", content: "For Sanjana — A Birthday Story" },
-      { property: "og:description", content: "A cinematic, interactive birthday letter for Sanjana." },
+      {
+        property: "og:description",
+        content: "A cinematic, interactive birthday letter for Sanjana.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@sanjana" },
@@ -95,7 +100,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Poppins:wght@300;400;500;600&family=Caveat:wght@500;600&display=swap" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Poppins:wght@300;400;500;600&family=Caveat:wght@500;600&display=swap",
+      },
     ],
   }),
   shellComponent: RootShell,
